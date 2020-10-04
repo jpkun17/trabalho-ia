@@ -65,28 +65,44 @@ def vizinho_mais_proximo(grafo):
 #################################################################################################
 # Método responsável por dividir o grafo para N caixeiros e coletar suas distâncias percorridas.
 #################################################################################################
+
 def n_caixeiros(grafo, caixeiros):
 
     primeira_cidade = grafo[0]
+    distancia_maxima_dia = 600
+    custo_diaria = 150
     distancia_cada_caixeiro = []
     distancia_total = 0
+    dias_cada_caixeiro = []
+    custo_cada_caixeiro = []
+    custo_total = 0
 
     lista_subgrafos = list(parte_lista(grafo, caixeiros))
 
+    #Adiciona a primeira cidade aos subgrafos que não a têm (indice 1 em diante)
+    #já que todos saem da cidade 0
     i = 1
     while i < len(lista_subgrafos):
         lista_subgrafos[i].insert(0, primeira_cidade)
         i += 1
 
+    #Calcula os dados de cada caixeiro
     for subgrafo in lista_subgrafos:
         retorno = vizinho_mais_proximo(subgrafo)
         distancia_cada_caixeiro.append(retorno)
+        dias = int(retorno/distancia_maxima_dia)
+        dias_cada_caixeiro.append(dias)
+        custo = dias * custo_diaria
+        custo_cada_caixeiro.append(custo)
         distancia_total += retorno
+        custo_total += custo
 
+    #Testes
     print(distancia_cada_caixeiro)
     print(distancia_total)
-
-    #return lee
+    print(dias_cada_caixeiro)
+    print(custo_cada_caixeiro)
+    print(custo_total)
 
 #################################################################################################
 # Main
@@ -118,23 +134,12 @@ def main(args):
     
     #Fecha o arquivo de entrada.
     arqv_entrada.close()
-
-    #Cria arquivo de saida
-    #arqv_saida = open(nome_saida, 'w')
-    #arqv_saida.write(str(list_size) + "\n")
-
-    #for number in number_list:
-    #    arqv_saida.write(str(number) + "\n")
     
     #testes
-
     n_caixeiros(lista_cidades,numero_caixeiros)
-    #result = vizinho_mais_proximo(lista_cidades)
-    #for cidade in result:
-    #    print(cidade['nome'])
-    #print("Concluido!")
+    print("Concluido!")
 
     return 0
 
-if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+#Executa a função main
+sys.exit(main(sys.argv))
