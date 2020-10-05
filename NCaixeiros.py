@@ -3,7 +3,6 @@
 import sys
 import math
 
-
 #################################################################################################
 # Calcula distância euclidiana entre duas cidades.
 #################################################################################################
@@ -18,6 +17,14 @@ def calcula_distancia(cidade1, cidade2):
 
 def parte_lista(seq, size):
     return (seq[i::size] for i in range(size))
+
+#################################################################################################
+# Reseta o grafo pra rodar de novo pra outro numero de caixeiros
+#################################################################################################
+
+def reseta(grafo):
+    for cidade in grafo:
+        cidade['visitado'] = False
 
 #################################################################################################
 # Algoritmo do Vizinho Mais Próximo (greedy algorithm)
@@ -56,9 +63,9 @@ def vizinho_mais_proximo(grafo):
     distancia_percorrida += calcula_distancia(vertice_atual, grafo[0])
 
     #printa a ordem que as cidades foram visitadas (apenas pra testes)
-    for item in lista_visitas:
-        print(item['nome'])
-    print("--------")
+    #for item in lista_visitas:
+    #    print(item['nome'])
+    #print("--------")
 
     return round(distancia_percorrida, 3)
 
@@ -97,10 +104,7 @@ def n_caixeiros(grafo, caixeiros):
         distancia_total += retorno
         custo_total += custo
 
-    #Testes
-    
-
-
+    #Saída da tabela via terminal
     print("                            Resultados")
     print("--------------------------------------------------------------------\n")
     print("A distância percorrida por cada caixeiro é:\n")
@@ -119,6 +123,36 @@ def n_caixeiros(grafo, caixeiros):
     print(custo_total)
     print("\n")  
     print("--------------------------------------------------------------------\n")
+
+    return [distancia_total, distancia_cada_caixeiro, dias_cada_caixeiro, custo_cada_caixeiro, custo_total]
+
+#################################################################################################
+# Formata a tabela de saída no arquivo.dat
+#################################################################################################
+
+def formata_tabela(arquivo_saida, dados_tabela):
+    numero_caixeiros = len(dados_tabela[1])
+    arquivo_saida.write("Exec: " + str(numero_caixeiros) + "\n")
+    arquivo_saida.write("m: " + str(numero_caixeiros) + "\n")
+    arquivo_saida.write("Distância encontrada: " + str(dados_tabela[0]) + "\n")
+    arquivo_saida.write("Distância de cada caixeiro:" + "\n")
+    i = 0
+    while i < numero_caixeiros:
+        arquivo_saida.write(str(i + 1) + "-> " + str(dados_tabela[1][i]) + "\n")
+        i += 1
+    arquivo_saida.write("Dias de cada caixeiro:" + "\n")
+    i = 0
+    while i < numero_caixeiros:
+        arquivo_saida.write(str(i + 1) + "-> " + str(dados_tabela[2][i]) + "\n")
+        i += 1
+    arquivo_saida.write("Custo de cada caixeiro:" + "\n")
+    i = 0
+    while i < numero_caixeiros:
+        arquivo_saida.write(str(i + 1) + "-> " + str(dados_tabela[3][i]) + "\n")
+        i += 1
+    arquivo_saida.write("Custo Total: " + str(dados_tabela[4]) + "\n")
+    arquivo_saida.write("----------------------------------------------" + "\n")
+
 
 #################################################################################################
 # Main
@@ -151,8 +185,20 @@ def main(args):
     #Fecha o arquivo de entrada.
     arqv_entrada.close()
     
-    #testes
-    n_caixeiros(lista_cidades,numero_caixeiros)
+    #cria tabela de saida
+    arqv_saida = open("resultado-" + nome_entrada, 'w')
+
+    #Execução do programa
+    caixeiros = 1
+    while(caixeiros <= numero_caixeiros):
+        dados_da_tabela = n_caixeiros(lista_cidades,caixeiros)
+        formata_tabela(arqv_saida, dados_da_tabela)
+        reseta(lista_cidades)
+        caixeiros += 1
+
+    #Fecha o arquivo de saída.
+    arqv_saida.close()
+
     print("Concluido!")
 
     return 0
