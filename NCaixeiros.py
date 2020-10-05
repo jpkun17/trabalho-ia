@@ -2,7 +2,7 @@
 
 import sys
 import math
-import numpy
+
 
 #################################################################################################
 # Calcula distância euclidiana entre duas cidades.
@@ -98,11 +98,27 @@ def n_caixeiros(grafo, caixeiros):
         custo_total += custo
 
     #Testes
+    
+
+
+    print("                            Resultados")
+    print("--------------------------------------------------------------------\n")
+    print("A distância percorrida por cada caixeiro é:\n")
     print(distancia_cada_caixeiro)
+    print("\n")
+    print("A distância total percorrida pelos caixeiros é:\n")
     print(distancia_total)
+    print("\n")
+    print("A quantidade de dias trabalhados pelos caixeiros é:\n")
     print(dias_cada_caixeiro)
+    print("\n")
+    print("O custo do dia de trabalho de cada caixeiro é:\n")
     print(custo_cada_caixeiro)
+    print("\n")
+    print("O custo total é:\n")
     print(custo_total)
+    print("\n")  
+    print("--------------------------------------------------------------------\n")
 
 #################################################################################################
 # Main
