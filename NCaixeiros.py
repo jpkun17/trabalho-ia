@@ -74,7 +74,8 @@ def vizinho_mais_proximo(grafo):
 #################################################################################################
 
 def n_caixeiros(grafo, caixeiros):
-
+    
+    numero_cidades = len(grafo)
     primeira_cidade = grafo[0]
     distancia_maxima_dia = 600
     custo_diaria = 150
@@ -124,7 +125,7 @@ def n_caixeiros(grafo, caixeiros):
     print("\n")  
     print("--------------------------------------------------------------------\n")
 
-    return [distancia_total, distancia_cada_caixeiro, dias_cada_caixeiro, custo_cada_caixeiro, custo_total]
+    return [distancia_total, distancia_cada_caixeiro, dias_cada_caixeiro, custo_cada_caixeiro, custo_total, numero_cidades, caixeiros]
 
 #################################################################################################
 # Formata a tabela de saída no arquivo.dat
@@ -132,6 +133,20 @@ def n_caixeiros(grafo, caixeiros):
 
 def formata_tabela(arquivo_saida, dados_tabela):
     numero_caixeiros = len(dados_tabela[1])
+
+    #Valores dos ótimos, utilizados APENAS PARA COMPARAÇÃO DE DESEMPENHO.
+    otimo30 = 48872.402
+    otimo100 = 21285.4432
+
+    if(dados_tabela[5] == 30 and dados_tabela[6] == 1):
+        valor = otimo30 / dados_tabela[0] * 100
+        arquivo_saida.write("Porcentagem do ótimo: " + str(round(valor, 2)) + "\n")
+        arquivo_saida.write("----------------------------------------------" + "\n")
+    elif(dados_tabela[5] == 100 and dados_tabela[6] == 1):
+        valor = otimo100 / dados_tabela[0] * 100
+        arquivo_saida.write("Porcentagem do ótimo: " + str(round(valor, 2)) + "\n")
+        arquivo_saida.write("----------------------------------------------" + "\n")
+    
     arquivo_saida.write("Exec: " + str(numero_caixeiros) + "\n")
     arquivo_saida.write("m: " + str(numero_caixeiros) + "\n")
     arquivo_saida.write("Distância encontrada: " + str(dados_tabela[0]) + "\n")
